@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naama Melzer — Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="page-fade">
+
+  <header>
+    <span class="nav-brand">Naama Melzer</span>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="Video.html">Video Editing</a></li>
+        <li><a href="Art.html">Art Design</a></li>
+        <li><a href="CostumeDesgine.html">Costume Design</a></li>
+        <li><a href="ContactUs.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-line"></div>
+    <h1>Naama Melzer</h1>
+    <h2>Video Editor &nbsp;·&nbsp; Art &amp; Costume Design</h2>
+    <div class="hero-divider"><span></span></div>
+  </section>
+
+  <!-- Video Section -->
+  <div class="section-header">
+    <p class="label">Featured Work</p>
+    <h2>Showreel</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="video-section">
+    <div class="video-wrapper">
+      <video id="hero-video" src="Video.mp4" playsinline muted autoplay></video>
+      <div class="video-controls">
+        <button class="vc-btn" id="vc-play" title="Pause">
+          <i class="fas fa-pause"></i>
+        </button>
+        <button class="vc-btn" id="vc-restart" title="Start Over">
+          <i class="fas fa-redo"></i>
+        </button>
+        <button class="vc-btn" id="vc-mute" title="Unmute">
+          <i class="fas fa-volume-mute"></i>
+        </button>
+        <div class="vc-progress">
+          <div class="vc-progress-bar" id="vc-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Gallery Slider -->
+  <div class="section-header">
+    <p class="label">Selected Works</p>
+    <h2>Portfolio Highlights</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="slider-wrap" id="home-slider">
+    <div class="slider-track" id="home-track">
+      <img src="images/image19.jpg" alt="Work 1">
+      <img src="images/image28.jpg" alt="Work 2">
+      <img src="images/image18.jpg" alt="Work 3">
+      <img src="images/image27.jpg" alt="Work 4">
+      <img src="images/image25.jpg" alt="Work 5">
+      <img src="images/image17.jpg" alt="Work 6">
+    </div>
+    <button class="slider-btn prev" id="home-prev"><i class="fa fa-chevron-left"></i></button>
+    <button class="slider-btn next" id="home-next"><i class="fa fa-chevron-right"></i></button>
+    <div class="slider-dots" id="home-dots"></div>
+  </div>
+
+
+
+  <!-- Contact Quick Bar -->
+  <div class="home-contact">
+    <h2>Contact</h2>
+    <div class="rule"></div>
+    <ul>
+      <li><i class="fas fa-map-marker-alt"></i> Tel Aviv, Israel</li>
+      <li><i class="fas fa-phone"></i> 052-864-4582</li>
+      <li><i class="fas fa-envelope"></i> <a href="ContactUs.html">Naamamelzer@gmail.com</a></li>
+      <li><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/nm._art_/" target="_blank">nm._art_</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Naama Melzer &mdash; All rights reserved</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
