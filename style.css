@@ -89,8 +89,8 @@ nav ul li a:hover::after, nav ul li a.active::after { width:100%; }
 
 /* ── Hero ── */
 .hero {
-  min-height: 100vh; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; text-align:center;
+  min-height: auto; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-start;; text-align:center;
   padding: 100px 40px 60px; position:relative; overflow:hidden;
 }
 .hero::before {
@@ -129,7 +129,7 @@ nav ul li a:hover::after, nav ul li a.active::after { width:100%; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── Section Header ── */
-.section-header { text-align:center; padding:80px 20px 50px; }
+.section-header { text-align:center; padding:20px 20px 50px; }
 .section-header .label { font-size:0.63rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
 .section-header h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,5vw,3.2rem); font-weight:300; color:var(--white); letter-spacing:0.05em; }
 .section-header .rule { width:48px; height:1px; background:var(--gold); margin:20px auto 0; }
@@ -441,4 +441,136 @@ footer {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* ── WhatsApp Floating Bar ── */
+.wa-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 500;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(37,211,102,0.25);
+  padding: 0;
+}
+
+.wa-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 13px 24px;
+  text-decoration: none;
+  transition: background var(--transition);
+  cursor: pointer;
+}
+
+.wa-bar-inner:hover {
+  background: rgba(37,211,102,0.08);
+}
+
+.wa-icon {
+  width: 32px; height: 32px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(37,211,102,0); }
+}
+
+.wa-icon svg {
+  width: 18px; height: 18px;
+  fill: #fff;
+}
+
+.wa-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #25D366;
+  direction: rtl;
+}
+
+.wa-arrow {
+  color: rgba(37,211,102,0.5);
+  font-size: 0.75rem;
+  margin-right: 4px;
+}
+
+/* Push footer up so it's not hidden behind the bar */
+footer {
+  margin-bottom: 58px;
+}
+
+/* ── WhatsApp CTA on Contact Page ── */
+.wa-cta-section {
+  width: min(900px, 92vw);
+  margin: 0 auto 32px;
+}
+
+.wa-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(37,211,102,0.06);
+  border: 1px solid rgba(37,211,102,0.2);
+  border-radius: 4px;
+  padding: 24px 36px;
+  gap: 20px;
+}
+
+.wa-cta-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--white);
+  direction: rtl;
+}
+
+.wa-cta-sub {
+  font-size: 0.75rem;
+  color: var(--grey);
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+  direction: rtl;
+}
+
+.wa-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 3px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  transition: background var(--transition), transform var(--transition);
+  flex-shrink: 0;
+}
+
+.wa-cta-btn:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+}
+
+.wa-cta-btn svg {
+  width: 20px; height: 20px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .wa-cta-inner { flex-direction: column; text-align: center; padding: 20px; }
+  .wa-cta-label, .wa-cta-sub { direction: ltr; }
+  .wa-text { font-size: 0.72rem; }
 }
