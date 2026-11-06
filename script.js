@@ -1,47 +1,50 @@
-// Naama Melzer portfolio — lightweight interactions
+// Naama Melzer portfolio interactions
 (() => {
   "use strict";
-  function initProjectSliders(){
-    document.querySelectorAll(".project-slider").forEach(slider=>{
-      const track=slider.querySelector(".project-track");
-      const images=track ? Array.from(track.querySelectorAll("img")) : [];
-      const prev=slider.querySelector(".project-prev");
-      const next=slider.querySelector(".project-next");
-      const counter=slider.querySelector(".project-frame-count");
-      if(!track || images.length<2)return;
-      let index=0;
-      const show=()=>{
-        track.style.transform=`translateX(-${index*100}%)`;
-        if(counter)counter.textContent=`${String(index+1).padStart(2,"0")} / ${String(images.length).padStart(2,"0")}`;
-      };
-      if(prev)prev.addEventListener("click",()=>{index=(index-1+images.length)%images.length;show();});
-      if(next)next.addEventListener("click",()=>{index=(index+1)%images.length;show();});
-      let startX=null;
-      slider.addEventListener("touchstart",event=>{startX=event.changedTouches[0].clientX;},{passive:true});
-      slider.addEventListener("touchend",event=>{
-        if(startX===null)return;
-        const delta=event.changedTouches[0].clientX-startX;
-        if(delta < -40)index=(index+1)%images.length;
-        if(delta > 40)index=(index-1+images.length)%images.length;
-        startX=null;show();
-      },{passive:true});
-      show();
+
+  function initProjectFilters() {
+    const buttons = document.querySelectorAll("[data-filter]");
+    const projects = document.querySelectorAll(".project-entry[data-category]");
+    if (!buttons.length || !projects.length) return;
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        buttons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        projects.forEach(project => {
+          const matches = filter === "all" || project.dataset.category === filter;
+          project.hidden = !matches;
+        });
+      });
     });
   }
-  function initContactForm(){
-    const form=document.getElementById("contact-form");
-    if(!form)return;
-    const button=document.getElementById("submit-btn");
-    const status=document.getElementById("form-status");
-    const endpoint="https://formsubmit.co/ajax/naamamelzer@gmail.com";
-    if(!button||!status)return;
-    const original=button.innerHTML;
-    form.addEventListener("submit",async event=>{
+
+  function initContactForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+
+    const button = document.getElementById("submit-btn");
+    const status = document.getElementById("form-status");
+    const endpoint = "https://formsubmit.co/ajax/naamamelzer@gmail.com";
+    if (!button || !status) return;
+
+    const originalButtonMarkup = button.innerHTML;
+    form.addEventListener("submit", async event => {
       event.preventDefault();
-      if(!form.reportValidity())return;
-      button.disabled=true;button.setAttribute("aria-disabled","true");form.setAttribute("aria-busy","true");
-      button.textContent="SENDING…";status.textContent="Sending your message…";status.className="form-status";
-      try{
+      if (!form.reportValidity()) return;
+
+      button.disabled = true;
+      button.setAttribute("aria-disabled", "true");
+      form.setAttribute("aria-busy", "true");
+      button.textContent = "SENDING…";
+      status.textContent = "Sending your message…";
+      status.className = "form-status";
+
+      try {
         const payload = Object.fromEntries(new FormData(form).entries());
         const response = await fetch(endpoint, {
           method: "POST",
@@ -51,21 +54,32 @@
           },
           body: JSON.stringify(payload)
         });
-        const result=await response.json();
-        if(!response.ok||!(result.success===true||result.success==="true"))throw new Error(result.message||"Message not accepted");
-        status.textContent="Thank you — your message has been sent. Naama will get back to you soon.";
-        status.classList.add("is-success");form.reset();
-      }catch(error){
-        console.error("Contact form submission failed:",error);
-        status.textContent="Sorry, the message could not be sent. Please email naamamelzer@gmail.com or contact Naama on WhatsApp.";
+        const result = await response.json();
+        if (!response.ok || !(result.success === true || result.success === "true")) {
+          throw new Error(result.message || "The message was not accepted.");
+        }
+
+        status.textContent = "Thank you — your message has been sent. Naama will get back to you soon.";
+        status.classList.add("is-success");
+        form.reset();
+      } catch (error) {
+        console.error("Contact form submission failed:", error);
+        status.textContent = "Sorry, the message could not be sent right now. Please email naamamelzer@gmail.com or contact Naama on WhatsApp.";
         status.classList.add("is-error");
-      }finally{
-        button.disabled=false;button.removeAttribute("aria-disabled");form.removeAttribute("aria-busy");button.innerHTML=original;
+      } finally {
+        button.disabled = false;
+        button.removeAttribute("aria-disabled");
+        form.removeAttribute("aria-busy");
+        button.innerHTML = originalButtonMarkup;
       }
     });
   }
-  document.addEventListener("DOMContentLoaded",()=>{
-    initProjectSliders();initContactForm();
-    document.querySelectorAll(".current-year").forEach(node=>node.textContent=String(new Date().getFullYear()));
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initProjectFilters();
+    initContactForm();
+    document.querySelectorAll(".current-year").forEach(element => {
+      element.textContent = String(new Date().getFullYear());
+    });
   });
 })();
