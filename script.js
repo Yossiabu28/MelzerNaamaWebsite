@@ -4,7 +4,7 @@
 
   function initProjectFilters() {
     const buttons = document.querySelectorAll("[data-filter]");
-    const projects = document.querySelectorAll(".project-entry[data-category]");
+    const projects = document.querySelectorAll(".project-card[data-category], .project-entry[data-category]");
     if (!buttons.length || !projects.length) return;
 
     buttons.forEach(button => {
@@ -19,6 +19,29 @@
           const matches = filter === "all" || project.dataset.category === filter;
           project.hidden = !matches;
         });
+      });
+    });
+  }
+
+
+  function initInlineProjectCards() {
+    const cards = document.querySelectorAll(".project-card");
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+      const frame = card.querySelector("iframe[data-src]");
+      card.addEventListener("toggle", () => {
+        if (card.open) {
+          cards.forEach(other => {
+            if (other !== card && other.open) other.open = false;
+          });
+          if (frame && !frame.hasAttribute("src")) {
+            frame.setAttribute("src", frame.dataset.src);
+          }
+        } else if (frame) {
+          // Stop playback when a project is collapsed; it will load again when reopened.
+          frame.removeAttribute("src");
+        }
       });
     });
   }
