@@ -42,9 +42,15 @@
       button.disabled=true;button.setAttribute("aria-disabled","true");form.setAttribute("aria-busy","true");
       button.textContent="SENDING…";status.textContent="Sending your message…";status.className="form-status";
       try{
-        const payload=new URLSearchParams();
-        for(const [key,value] of new FormData(form).entries())payload.append(key,value);
-        const response=await fetch(endpoint,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:payload.toString()});
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
         const result=await response.json();
         if(!response.ok||!(result.success===true||result.success==="true"))throw new Error(result.message||"Message not accepted");
         status.textContent="Thank you — your message has been sent. Naama will get back to you soon.";
