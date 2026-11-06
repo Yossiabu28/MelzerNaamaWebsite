@@ -1,193 +1,85 @@
-// ============================================================
-//  NAAMA MELZER PORTFOLIO  —  Unified Script
-// ============================================================
+// Naama Melzer portfolio interactions
+(() => {
+  "use strict";
 
-// ── Generic Slider factory ────────────────────────────────
-function initSlider(trackEl, prevBtn, nextBtn, dotsEl, autoPlay) {
-  if (!trackEl) return;
+  function initProjectFilters() {
+    const buttons = document.querySelectorAll("[data-filter]");
+    const projects = document.querySelectorAll(".project-entry[data-category]");
+    if (!buttons.length || !projects.length) return;
 
-  const imgs = trackEl.querySelectorAll('img');
-  const total = imgs.length;
-  if (total === 0) return;
-
-  let idx = 0;
-  let timer;
-
-  // Build dots
-  if (dotsEl) {
-    imgs.forEach((_, i) => {
-      const dot = document.createElement('span');
-      if (i === 0) dot.classList.add('active');
-      dot.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(dot);
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        buttons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        projects.forEach(project => {
+          const matches = filter === "all" || project.dataset.category === filter;
+          project.hidden = !matches;
+        });
+      });
     });
   }
 
-  function goTo(n) {
-    idx = (n + total) % total;
-    trackEl.style.transform = `translateX(-${idx * 100}%)`;
-    if (dotsEl) {
-      dotsEl.querySelectorAll('span').forEach((d, i) => d.classList.toggle('active', i === idx));
-    }
-  }
+  function initContactForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
 
-  function next() { goTo(idx + 1); }
-  function prev() { goTo(idx - 1); }
+    const button = document.getElementById("submit-btn");
+    const status = document.getElementById("form-status");
+    const endpoint = "https://formsubmit.co/ajax/naamamelzer@gmail.com";
+    if (!button || !status) return;
 
-  if (prevBtn) prevBtn.addEventListener('click', () => { prev(); resetAuto(); });
-  if (nextBtn) nextBtn.addEventListener('click', () => { next(); resetAuto(); });
+    const originalButtonMarkup = button.innerHTML;
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
 
-  // Touch swipe
-  let sx = 0;
-  trackEl.parentElement.addEventListener('touchstart', e => { sx = e.touches[0].clientX; });
-  trackEl.parentElement.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - sx;
-    if (dx < -40) { next(); resetAuto(); }
-    else if (dx > 40) { prev(); resetAuto(); }
-  });
+      button.disabled = true;
+      button.setAttribute("aria-disabled", "true");
+      form.setAttribute("aria-busy", "true");
+      button.textContent = "SENDING…";
+      status.textContent = "Sending your message…";
+      status.className = "form-status";
 
-  function startAuto() {
-    if (autoPlay) timer = setInterval(next, autoPlay);
-  }
-  function resetAuto() {
-    clearInterval(timer);
-    startAuto();
-  }
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok || !(result.success === true || result.success === "true")) {
+          throw new Error(result.message || "The message was not accepted.");
+        }
 
-  startAuto();
-  goTo(0);
-}
-
-// ── Init all sliders on page load ─────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Home page hero slider
-  initSlider(
-    document.getElementById('home-track'),
-    document.getElementById('home-prev'),
-    document.getElementById('home-next'),
-    document.getElementById('home-dots'),
-    3500
-  );
-
-  // Video page: multiple paired sliders
-  const vpTracks = document.querySelectorAll('.vp-track');
-  vpTracks.forEach(track => {
-    const wrap = track.closest('.slider-wrap') || track.parentElement;
-    const prev = wrap.querySelector('.vp-prev');
-    const next = wrap.querySelector('.vp-next');
-    initSlider(track, prev, next, null, 0);
-  });
-
-  // ── Video Player Controls ────────────────────────────────
-  const video = document.getElementById('hero-video');
-  const playBtn = document.getElementById('vc-play');
-  const restartBtn = document.getElementById('vc-restart');
-  const muteBtn = document.getElementById('vc-mute');
-  const bar = document.getElementById('vc-bar');
-
-  if (video) {
-    video.addEventListener('timeupdate', () => {
-      if (video.duration) {
-        bar.style.width = (video.currentTime / video.duration * 100) + '%';
+        status.textContent = "Thank you — your message has been sent. Naama will get back to you soon.";
+        status.classList.add("is-success");
+        form.reset();
+      } catch (error) {
+        console.error("Contact form submission failed:", error);
+        status.textContent = "Sorry, the message could not be sent right now. Please email naamamelzer@gmail.com or contact Naama on WhatsApp.";
+        status.classList.add("is-error");
+      } finally {
+        button.disabled = false;
+        button.removeAttribute("aria-disabled");
+        form.removeAttribute("aria-busy");
+        button.innerHTML = originalButtonMarkup;
       }
     });
-
-    const progress = document.querySelector('.vc-progress');
-    if (progress) {
-      progress.addEventListener('click', e => {
-        const rect = progress.getBoundingClientRect();
-        video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
-      });
-    }
-
-    if (playBtn) {
-      playBtn.addEventListener('click', () => {
-        if (video.paused) {
-          video.play();
-          playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          playBtn.title = 'Pause';
-        } else {
-          video.pause();
-          playBtn.innerHTML = '<i class="fas fa-play"></i>';
-          playBtn.title = 'Play';
-        }
-      });
-      video.addEventListener('ended', () => {
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        playBtn.title = 'Play';
-      });
-    }
-
-    if (restartBtn) {
-      restartBtn.addEventListener('click', () => {
-        video.currentTime = 0;
-        video.play();
-        if (playBtn) {
-          playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          playBtn.title = 'Pause';
-        }
-      });
-    }
-
-    if (muteBtn) {
-      muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-      muteBtn.title = 'Unmute';
-      muteBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        muteBtn.innerHTML = video.muted
-          ? '<i class="fas fa-volume-mute"></i>'
-          : '<i class="fas fa-volume-up"></i>';
-        muteBtn.title = video.muted ? 'Unmute' : 'Mute';
-      });
-    }
   }
 
-  // ── EmailJS contact form ─────────────────────────────────
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init('jBBFjz6cGH9b0ft6b');
-  }
-
-  const form = document.getElementById('contact-form');
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const btn = document.getElementById('submit-btn');
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
-      btn.disabled = true;
-
-      // Send notification to Naama
-      emailjs.sendForm('service_t9mw0br', 'template_e2ah3bg', this)
-        .then(() => {
-          // Send auto-reply to the person who contacted (if template 2 exists)
-          const autoReplyTemplateId = 'TEMPLATE_ID_2'; // replace when ready
-          if (autoReplyTemplateId !== 'TEMPLATE_ID_2') {
-            emailjs.sendForm('service_t9mw0br', autoReplyTemplateId, form);
-          }
-          showModal('✨ Thank you! Your message was sent successfully.');
-          form.reset();
-        })
-        .catch(() => {
-          showModal('Something went wrong — please try again or email me directly.');
-        })
-        .finally(() => {
-          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-          btn.disabled = false;
-        });
+  document.addEventListener("DOMContentLoaded", () => {
+    initProjectFilters();
+    initContactForm();
+    document.querySelectorAll(".current-year").forEach(element => {
+      element.textContent = String(new Date().getFullYear());
     });
-  }
-
-  // Modal helpers
-  const modal = document.getElementById('statusModal');
-  const closeBtn = document.getElementById('closeStatusModal');
-
-  function showModal(msg) {
-    if (!modal) return;
-    document.getElementById('statusMessage').textContent = msg;
-    modal.classList.add('open');
-    setTimeout(() => modal.classList.remove('open'), 4000);
-  }
-
-  if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
-});
+  });
+})();
