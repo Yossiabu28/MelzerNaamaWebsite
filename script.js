@@ -18,6 +18,7 @@
         projects.forEach(project => {
           const matches = filter === "all" || project.dataset.category === filter;
           project.hidden = !matches;
+          if (!matches && project instanceof HTMLDetailsElement) project.open = false;
         });
       });
     });
@@ -100,6 +101,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     initProjectFilters();
+    initInlineProjectCards();
     initContactForm();
     document.querySelectorAll(".current-year").forEach(element => {
       element.textContent = String(new Date().getFullYear());
