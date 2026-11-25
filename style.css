@@ -581,8 +581,8 @@ footer {
   display:grid; grid-template-columns:150px 1fr 330px; gap:44px;
   align-items:stretch; padding:58px 56px; border-bottom:1px dashed #2b2b2b;
 }
-.work .strip { display:flex; flex-direction:column; gap:10px; }
-.work .strip img { width:100%; flex:1; min-height:0; object-fit:cover; filter:saturate(0.92); transition:filter var(--transition); }
+.work .strip { display:flex; flex-direction:column; gap:10px; justify-content:center; }
+.work .strip img { width:100%; flex:none; aspect-ratio:16/9; object-fit:cover; object-position:center; filter:saturate(0.92); transition:filter var(--transition); }
 .work:hover .strip img { filter:saturate(1.05); }
 .work .frame { align-self:center; }
 .work .frame img { width:100%; aspect-ratio:16/9; object-fit:cover; }
