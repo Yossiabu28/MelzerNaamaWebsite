@@ -26,7 +26,7 @@
     <div class="rule"></div>
   </div>
 
-  <section class="works">
+  <section class="works works-compact">
 
     <div class="work">
       <div class="strip">
@@ -213,5 +213,33 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+  (function(){
+    var mq = window.matchMedia('(max-width:900px)');
+    document.querySelectorAll('.work').forEach(function(w){
+      var frame = w.querySelector('.frame'), main = frame && frame.querySelector('img');
+      if(!main) return;
+      var list = [main];
+      w.querySelectorAll('.strip img').forEach(function(s){
+        var c = document.createElement('img'); c.src = s.src; c.alt = s.alt; c.className = 'rot-img'; frame.appendChild(c); list.push(c);
+      });
+      w.querySelectorAll('.strip img').forEach(function(s){
+        s.style.cursor = 'pointer';
+        s.addEventListener('click', function(){
+          var a = main.src, b = main.alt;
+          main.src = s.src; main.alt = s.alt;
+          s.src = a; s.alt = b;
+        });
+      });
+      frame.classList.add('rot'); main.classList.add('on');
+      var i = 0;
+      setInterval(function(){
+        if(!mq.matches) return;
+        list[i].classList.remove('on'); i = (i+1) % list.length; list[i].classList.add('on');
+      }, 3200);
+    });
+  })();
+  </script>
+
 </body>
 </html>
