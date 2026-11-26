@@ -629,10 +629,10 @@ footer {
 }
 
 /* ── Video Editing: compact, centered works ── */
-.works-compact { max-width:912px; margin-left:auto; margin-right:auto; width:92vw; }
-.works-compact .work { grid-template-columns:81px 1fr 258px; gap:24px; padding:37px 6px; }
-.works-compact .work .meta h3 { font-size:1.65rem; }
-.works-compact .work .meta p { font-size:0.8rem; line-height:1.7; }
+.works-compact { max-width:1094px; margin-left:auto; margin-right:auto; width:92vw; }
+.works-compact .work { grid-template-columns:97px 1fr 310px; gap:29px; padding:44px 6px; }
+.works-compact .work .meta h3 { font-size:1.98rem; }
+.works-compact .work .meta p { font-size:0.96rem; line-height:1.7; }
 .works-compact .work .meta .watch-btn { padding:10px 18px; font-size:0.62rem; }
 @media (max-width:900px) {
   .works-compact { width:100%; }
@@ -640,4 +640,4 @@ footer {
 }
 .works-compact .work .meta .watch-btn { white-space:nowrap; letter-spacing:0.14em; padding:10px 14px; gap:8px; }
 .works-compact .work .strip { gap:6px; }
-.works-compact .work .meta .watch-btn { padding:10px 13px; font-size:0.65rem; letter-spacing:0.1em; }
+.works-compact .work .meta .watch-btn { padding:12px 16px; font-size:0.78rem; letter-spacing:0.1em; }
