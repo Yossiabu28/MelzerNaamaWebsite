@@ -109,19 +109,24 @@ nav ul li a:hover::after, nav ul li a.active::after { width:100%; }
 .hero h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3.2rem, 8vw, 5.5rem); font-weight:300;
-  color: var(--white); letter-spacing:0.05em; line-height:1;
+  color: var(--white); letter-spacing:0.02em; line-height:1.05;
   animation: fadeUp 1s ease 0.3s both;
 }
 .hero h1 .hero-gold { color: var(--gold); }
 .hero h2 {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.72rem, 2vw, 0.95rem); font-weight:400;
-  color: var(--grey); letter-spacing:0.42em; text-transform:uppercase;
-  margin-top:22px; opacity:0.9; animation: fadeUp 1s ease 0.5s both;
+  font-size: clamp(0.7rem, 1.8vw, 0.88rem); font-weight:500;
+  color: var(--grey); letter-spacing:0.38em; text-transform:uppercase;
+  margin-top:26px; opacity:0.9; animation: fadeUp 1s ease 0.5s both;
+}
+.hero-tagline {
+  font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:400;
+  color: var(--gold); font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+  margin:20px 0 0; animation: fadeUp 1s ease 0.6s both;
 }
 .hero-divider {
   display:flex; align-items:center; gap:16px;
-  margin: 36px auto 0; width:260px; animation: fadeUp 1s ease 0.7s both;
+  margin: 40px auto 0; width:260px; animation: fadeUp 1s ease 0.7s both;
 }
 .hero-divider::before, .hero-divider::after { content:''; flex:1; height:1px; background:var(--border); }
 .hero-divider span { width:5px; height:5px; background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
