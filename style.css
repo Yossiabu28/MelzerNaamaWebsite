@@ -588,10 +588,10 @@ footer {
   align-items:stretch; padding:58px 56px; border-bottom:1px dashed #2b2b2b;
 }
 .work .strip { display:flex; flex-direction:column; gap:10px; justify-content:center; }
-.work .strip img { width:100%; flex:none; aspect-ratio:16/9; object-fit:cover; object-position:center; filter:saturate(0.92); transition:filter var(--transition); }
+.work .strip img { width:100%; flex:none; aspect-ratio:16/9; object-fit:contain; background:#0d0d0d; object-position:center; filter:saturate(0.92); transition:filter var(--transition); }
 .work:hover .strip img { filter:saturate(1.05); }
 .work .frame { align-self:center; }
-.work .frame img { width:100%; aspect-ratio:16/9; object-fit:cover; }
+.work .frame img { width:100%; aspect-ratio:16/9; object-fit:contain; background:#0d0d0d; }
 .work .meta { display:flex; flex-direction:column; justify-content:space-between; gap:18px; padding:6px 0; }
 .work .meta .cat { font-size:0.6rem; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); }
 .work .meta h3 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:2rem; letter-spacing:0.04em; color:var(--white); margin-top:10px; }
