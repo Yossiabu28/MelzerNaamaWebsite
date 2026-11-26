@@ -292,10 +292,11 @@ footer {
 }
 
 @media (max-width:600px) {
-  header { padding:0 16px; }
-  nav ul { gap:14px; }
-  nav ul li a { font-size:0.58rem; }
-  .nav-brand { font-size:0.85rem; }
+  header { padding:0 12px; }
+  nav ul { gap:10px; }
+  nav ul li a { font-size:0.55rem; letter-spacing:0.12em; }
+  .nav-brand { font-size:0.78rem; }
+  section.works .work { overflow:hidden; }
   .hero { padding:110px 20px 50px; }
   .costume-masonry { columns:1; }
   .art-grid { grid-template-columns:1fr; }
